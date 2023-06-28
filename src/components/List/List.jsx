@@ -4,21 +4,29 @@ import useFetch from "../../hooks/useFetch"
 import "./List.scss";
 
 const List = () => {
-    const { data } = useFetch('https://fakestoreapi.com/products/categories')
+    const { data: todos } = useFetch('http://localhost:3001/todos')
+
+    console.log(todos)
+
+    const handleChange = (e) => {
+    }
 
     return (
         <ListGroup>
-            {data && data.length > 0 && data.map((item, index) => {
+            {todos && todos.length > 0 ? todos.map(todo => {
                 return (
-                    <ListGroup.Item key={index}>
+                    <ListGroup.Item key={todo._id}>
                         <Form.Check
+                            className={todo.completed && "completed"}
                             type="checkbox"
-                            label={item}
-                            id={`${index}-${item}`}
+                            label={todo.todo}
+                            id={todo._id}
+                            checked={todo.completed}
+                            onChange={(e) => handleChange(e)}
                         />
                     </ListGroup.Item>
                 )
-            })}
+            }) : <div className="card p-4 text-center">Todo list is empty.</div>}
         </ListGroup>
     );
 }

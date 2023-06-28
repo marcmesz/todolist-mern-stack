@@ -1,2 +1,5 @@
 @use "../../scss/" as *;
 
+.completed label{
+    text-decoration: line-through;
+}
