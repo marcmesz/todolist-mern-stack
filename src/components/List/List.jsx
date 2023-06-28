@@ -10,17 +10,15 @@ const List = (props) => {
         const todoId = e.target.id
         fetch(`http://localhost:3001/updatetodos/${todoId}`,
             { method: "POST", body: JSON.stringify(todoId) })
-            .then((res) => props.fetchData())
+            .then(() => props.fetchData())
             .catch(e => console.error(e))
     }
 
     const handleDelete = (todoId) => {
         fetch(`http://localhost:3001/deletetodo/${todoId}`,
             { method: "POST", body: JSON.stringify(todoId) })
-            .then(() => {
-                props.setLoading(true)
-                props.fetchData()
-            }).catch(e => console.error(e))
+            .then(() => props.fetchData())
+            .catch(e => console.error(e))
     }
 
     return (
