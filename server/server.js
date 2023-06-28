@@ -14,36 +14,48 @@ const todoItemSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    completed: Boolean
+    completed: Boolean,
+    default: Boolean
 })
 
 
 const TodoItem = mongoose.model("TodoItem", todoItemSchema)
 
-/* const item0 = new TodoItem({
-    todo: "These initial todos were inserted to DB by default",
-    completed: true
+const setDefaultTodoItems = () => {
+    const item0 = new TodoItem({
+        todo: "These initial todos were inserted to DB by default",
+        completed: true,
+        default: true
+    })
+
+    const item1 = new TodoItem({
+        todo: "Store data in database",
+        completed: false,
+        default: true
+    })
+
+    const item2 = new TodoItem({
+        todo: "Read items from db...",
+        completed: false,
+        default: true
+    })
+
+    const item3 = new TodoItem({
+        todo: "Update current item in db...",
+        completed: false,
+        default: true
+    })
+
+    const defaultItems = [item0, item1, item2, item3]
+
+    TodoItem.insertMany(defaultItems).catch()
+}
+
+TodoItem.find({ default: true }).then((items) => {
+    if (items.length === 0) {
+        setDefaultTodoItems()
+    }
 })
-
-const item1 = new TodoItem({
-    todo: "Store data in database",
-    completed: false
-})
-
-const item2 = new TodoItem({
-    todo: "Read items from db...",
-    completed: false
-})
-
-const item3 = new TodoItem({
-    todo: "Update current item in db...",
-    completed: false
-})
-
-const defaultItems = [item0, item1, item2, item3]
-
-TodoItem.insertMany(defaultItems).catch() */
-
 
 app.get("/todos", (req, res) => {
     TodoItem.find().then(data => res.send(data))
@@ -52,7 +64,9 @@ app.get("/todos", (req, res) => {
 app.post("/deletetodo/:id", (req, res) => {
     const todoId = req.params.id
     TodoItem.findOne({ _id: todoId }).then(item => {
-        TodoItem.deleteOne({ _id: item._id }).catch(e => console.log(e))
+        TodoItem.deleteOne({ _id: item._id })
+            .then(() => res.send())
+            .catch(e => console.log(e))
     }).catch(e => console.log(e))
 })
 
@@ -67,9 +81,12 @@ app.post("/addtodo/:todo", (req, res) => {
 
 app.post("/updatetodos/:id", (req, res) => {
     const todoId = req.params.id
-    TodoItem.findOne({ _id: todoId }).then(item => {
-        TodoItem.updateOne({ _id: item._id }, { $set: { completed: !item.completed } }).catch(e => console.log(e))
-    }).catch(e => console.log(e))
+
+    TodoItem.findOne({ _id: todoId }).then((item) => {
+        TodoItem.updateOne({ _id: item._id }, { $set: { completed: !item.completed } }).then(() => {
+            res.send()
+        })
+    })
 })
 
 app.listen(3001, () => {

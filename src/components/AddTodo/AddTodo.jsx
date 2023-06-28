@@ -2,7 +2,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useRef } from 'react';
 
-const AddTodo = () => {
+const AddTodo = (props) => {
     const inputRef = useRef()
 
     const handleKeyPress = (e) => {
@@ -15,7 +15,10 @@ const AddTodo = () => {
         if (todo.length > 0) {
             fetch(`http://localhost:3001/addtodo/${encodeURI(todo)}`,
                 { method: "POST", body: JSON.stringify(todo) })
-                .then(() => inputRef.current.value = "")
+                .then(() => {
+                    inputRef.current.value = ""
+                    props.fetchData()
+                })
                 .catch(e => console.error(e))
         }
 
