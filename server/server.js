@@ -50,18 +50,26 @@ app.get("/todos", (req, res) => {
 })
 
 app.post("/deletetodo/:id", (req, res) => {
-    res.send("Delete...")
+    const todoId = req.params.id
+    TodoItem.findOne({ _id: todoId }).then(item => {
+        TodoItem.deleteOne({ _id: item._id }).catch(e => console.log(e))
+    }).catch(e => console.log(e))
 })
 
-app.post("/addtodo", (req, res) => {
-    res.send("Add....")
+app.post("/addtodo/:todo", (req, res) => {
+    const todo = decodeURI(req.params.todo)
+    const addItem = new TodoItem({
+        todo: todo,
+        completed: false
+    })
+    TodoItem.create(addItem).then(() => res.send()).catch(e => console.error(e))
 })
 
 app.post("/updatetodos/:id", (req, res) => {
     const todoId = req.params.id
     TodoItem.findOne({ _id: todoId }).then(item => {
-        TodoItem.updateOne({ _id: todoId }, { $set: { completed: !item.completed } }).catch()
-    })
+        TodoItem.updateOne({ _id: item._id }, { $set: { completed: !item.completed } }).catch(e => console.log(e))
+    }).catch(e => console.log(e))
 })
 
 app.listen(3001, () => {
