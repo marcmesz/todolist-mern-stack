@@ -29,7 +29,8 @@ const AddTodo = (props) => {
                 <div className="d-flex mt-3 gap-3">
                     <Form.Control onKeyDown={(e) => handleKeyPress(e)} ref={inputRef} type="text" id="add-todo" placeholder="Add todo item to list" />
                     <Button onClick={handleCreate} variant="primary" size="lg">Add</Button>
-                </div>}
+                </div>
+            }
         </>
     );
 }

@@ -22,10 +22,9 @@ const useFetch = () => {
 
     useEffect(() => {
         fetchData()
-        console.log("useFetch.........")
     }, [])
 
-    return { todos, setTodos, loading, setLoading, error, setError, fetchData }
+    return { todos, loading, error, fetchData }
 }
 
 export default useFetch
