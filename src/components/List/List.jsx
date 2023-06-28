@@ -2,6 +2,8 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
 import "./List.scss";
 import { useEffect, useState } from 'react';
+import { Trash } from 'react-bootstrap-icons';
+import Button from 'react-bootstrap/Button';
 
 const List = props => {
     const [todos, setTodos] = useState([])
@@ -36,7 +38,7 @@ const List = props => {
             {error && <div className="card p-2 text-center">❌Connection error. Server is not running!<br /><code>node server/server.js</code></div>}
             {todos && todos.length > 0 && todos.map(todo => {
                 return (
-                    <ListGroup.Item key={todo._id}>
+                    <ListGroup.Item key={todo._id} className="d-flex justify-content-between align-items-center">
                         <Form.Check
                             className={todo.completed && "completed"}
                             type="checkbox"
@@ -45,6 +47,7 @@ const List = props => {
                             checked={todo.completed}
                             onChange={(e) => handleChange(e)}
                         />
+                        <Button variant="danger" size="sm"><Trash size={15}/></Button>
                     </ListGroup.Item>
                 )
             })}

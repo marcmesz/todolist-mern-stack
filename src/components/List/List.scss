@@ -1,5 +1,22 @@
 @use "../../scss/" as *;
 
-.completed label{
+.completed label {
     text-decoration: line-through;
+}
+
+.btn-danger {
+    display: none;
+}
+
+.list-group-item {
+    &:hover {
+        .btn-danger {
+            display: block;
+        }
+    }
+}
+
+.form-check{
+    padding-top: .5em;
+    padding-bottom: .5em;
 }
