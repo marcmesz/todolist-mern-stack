@@ -1,12 +1,11 @@
 import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
 import "./List.scss";
-import useFetch from "../../hooks/useFetch"
 import { useEffect, useState } from 'react';
 
 const List = props => {
     const [todos, setTodos] = useState([])
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
 
     const handleChange = (e) => {
@@ -25,6 +24,7 @@ const List = props => {
             })
             .catch(e => {
                 if (e) {
+                    setLoading(false)
                     setError(true)
                 }
             })

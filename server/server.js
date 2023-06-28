@@ -62,7 +62,6 @@ app.post("/updatetodos/:id", (req, res) => {
     TodoItem.findOne({ _id: todoId }).then(item => {
         TodoItem.updateOne({ _id: todoId }, { $set: { completed: !item.completed } }).catch()
     })
-    res.send(JSON.stringify("Updated.."))
 })
 
 app.listen(3001, () => {
