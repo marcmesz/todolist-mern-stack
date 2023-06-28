@@ -1,19 +1,40 @@
 import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
-import useFetch from "../../hooks/useFetch"
 import "./List.scss";
+import useFetch from "../../hooks/useFetch"
+import { useEffect, useState } from 'react';
 
-const List = () => {
-    const { data: todos } = useFetch('http://localhost:3001/todos')
-
-    console.log(todos)
+const List = props => {
+    const [todos, setTodos] = useState([])
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(false)
 
     const handleChange = (e) => {
+        const todoId = e.target.id
+        fetch(`http://localhost:3001/updatetodos/${todoId}`, { method: "POST", body: JSON.stringify(todoId) })
+            .then(res => res.json())
+            .then(data => console.log(data))
     }
+
+    useEffect(() => {
+        fetch("http://localhost:3001/todos")
+            .then(res => res.json())
+            .then(data => {
+                setTodos(data)
+                setLoading(false)
+            })
+            .catch(e => {
+                if (e) {
+                    setError(true)
+                }
+            })
+    }, [todos])
 
     return (
         <ListGroup>
-            {todos && todos.length > 0 ? todos.map(todo => {
+            {loading && <div className="card p-3 text-center">⌛Loading...</div>}
+            {error && <div className="card p-2 text-center">❌Connection error. Server is not running!<br /><code>node server/server.js</code></div>}
+            {todos && todos.length > 0 && todos.map(todo => {
                 return (
                     <ListGroup.Item key={todo._id}>
                         <Form.Check
@@ -26,7 +47,7 @@ const List = () => {
                         />
                     </ListGroup.Item>
                 )
-            }) : <div className="card p-4 text-center">Todo list is empty.</div>}
+            })}
         </ListGroup>
     );
 }

@@ -5,6 +5,7 @@ const cors = require('cors')
 const app = express()
 
 app.use(cors())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 mongoose.connect("mongodb://localhost:27017/todolistDB")
 
@@ -49,11 +50,19 @@ app.get("/todos", (req, res) => {
 })
 
 app.post("/deletetodo/:id", (req, res) => {
-
+    res.send("Delete...")
 })
 
-app.post("/updatetodo/:id", (req, res) => {
+app.post("/addtodo", (req, res) => {
+    res.send("Add....")
+})
 
+app.post("/updatetodos/:id", (req, res) => {
+    const todoId = req.params.id
+    TodoItem.findOne({ _id: todoId }).then(item => {
+        TodoItem.updateOne({ _id: todoId }, { $set: { completed: !item.completed } }).catch()
+    })
+    res.send(JSON.stringify("Updated.."))
 })
 
 app.listen(3001, () => {
