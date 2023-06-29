@@ -45,7 +45,7 @@ const List = (props) => {
                             checked={todo.completed}
                             onChange={(e) => handleChange(e)}
                         />
-                        <Button variant="danger" size="sm" onClick={() => handleDelete(todo._id)}><Trash size={15} /></Button>
+                        <Button variant="danger" size="sm" onClick={() => handleDelete(todo._id)}><Trash size={20} /></Button>
                     </ListGroup.Item>
                 )
             }) : !props.error && !props.loading && <h5 className="card p-3 text-center">🥳You have nothing to do.🥳</h5>}
