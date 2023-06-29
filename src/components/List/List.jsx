@@ -6,18 +6,26 @@ import Button from 'react-bootstrap/Button';
 
 const List = (props) => {
     const server = process.env.REACT_APP_SERVER
-    
+
     const handleChange = (e) => {
         const todoId = e.target.id
-        fetch(`${server}/updatetodos/${todoId}`,
-            { method: "POST", body: JSON.stringify(todoId) })
+        fetch(`${server}/updatetodo`,
+            {
+                method: "POST",
+                body: JSON.stringify({ id: todoId }),
+                headers: { "Content-Type": "application/json" }
+            })
             .then(() => props.fetchData())
             .catch(e => console.error(e))
     }
 
     const handleDelete = (todoId) => {
-        fetch(`${server}/deletetodo/${todoId}`,
-            { method: "POST", body: JSON.stringify(todoId) })
+        fetch(`${server}/deletetodo`,
+            {
+                method: "POST",
+                body: JSON.stringify({ id: todoId }),
+                headers: { "Content-Type": "application/json" }
+            })
             .then(() => props.fetchData())
             .catch(e => console.error(e))
     }

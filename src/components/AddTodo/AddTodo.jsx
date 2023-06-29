@@ -14,8 +14,19 @@ const AddTodo = (props) => {
     const handleCreate = () => {
         const todo = inputRef.current.value.trim()
         if (todo.length > 0) {
-            fetch(`${server}/addtodo/${encodeURI(todo)}`,
-                { method: "POST", body: JSON.stringify(todo) })
+            const newTodo = {
+                todo: todo,
+                completed: false
+            }
+            fetch(`${server}/addtodo`,
+                {
+                    method: "POST",
+                    body: JSON.stringify(newTodo),
+                    headers: {
+                        "Content-Type": "application/json",
+                        //'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                })
                 .then(() => {
                     inputRef.current.value = ""
                     props.fetchData()

@@ -1,11 +1,11 @@
 const express = require("express")
-const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
 const cors = require('cors')
 const app = express()
 
 app.use(cors())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
 mongoose.connect("mongodb://localhost:27017/todolistDB")
 
@@ -61,28 +61,25 @@ app.get("/todos", (req, res) => {
     TodoItem.find().then(data => res.send(data))
 })
 
-app.post("/deletetodo/:id", (req, res) => {
-    const todoId = req.params.id
-    TodoItem.findOneAndDelete({ _id: todoId }).then(() => res.send())
+app.post("/deletetodo", (req, res) => {
+    TodoItem.findOneAndDelete({ _id: req.body.id }).then(() => res.send())
 })
 
-app.post("/addtodo/:todo", (req, res) => {
-    const todo = decodeURI(req.params.todo)
+app.post("/addtodo", (req, res) => {
     const addItem = new TodoItem({
-        todo: todo,
-        completed: false
+        todo: req.body.todo,
+        completed: req.body.completed
     })
     addItem.save()
     res.send()
 })
 
-app.post("/updatetodos/:id", (req, res) => {
-    const todoId = req.params.id
-
-    TodoItem.findOne({ _id: todoId }).then((item) => {
-        TodoItem.updateOne({ _id: item._id }, { $set: { completed: !item.completed } }).then(() => {
-            res.send()
-        })
+app.post("/updatetodo", (req, res) => {
+    TodoItem.findOne({ _id: req.body.id }).then((item) => {
+        TodoItem.updateOne({ _id: item._id }, { $set: { completed: !item.completed } })
+            .then(() => {
+                res.send()
+            })
     })
 })
 
