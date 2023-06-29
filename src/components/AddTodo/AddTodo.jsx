@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import { useRef } from 'react';
 
 const AddTodo = (props) => {
+    const server = process.env.REACT_APP_SERVER
     const inputRef = useRef()
 
     const handleKeyPress = (e) => {
@@ -13,7 +14,7 @@ const AddTodo = (props) => {
     const handleCreate = () => {
         const todo = inputRef.current.value.trim()
         if (todo.length > 0) {
-            fetch(`http://localhost:3001/addtodo/${encodeURI(todo)}`,
+            fetch(`${server}/addtodo/${encodeURI(todo)}`,
                 { method: "POST", body: JSON.stringify(todo) })
                 .then(() => {
                     inputRef.current.value = ""

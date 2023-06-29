@@ -5,17 +5,18 @@ import { Trash } from 'react-bootstrap-icons';
 import Button from 'react-bootstrap/Button';
 
 const List = (props) => {
-
+    const server = process.env.REACT_APP_SERVER
+    
     const handleChange = (e) => {
         const todoId = e.target.id
-        fetch(`http://localhost:3001/updatetodos/${todoId}`,
+        fetch(`${server}/updatetodos/${todoId}`,
             { method: "POST", body: JSON.stringify(todoId) })
             .then(() => props.fetchData())
             .catch(e => console.error(e))
     }
 
     const handleDelete = (todoId) => {
-        fetch(`http://localhost:3001/deletetodo/${todoId}`,
+        fetch(`${server}/deletetodo/${todoId}`,
             { method: "POST", body: JSON.stringify(todoId) })
             .then(() => props.fetchData())
             .catch(e => console.error(e))
