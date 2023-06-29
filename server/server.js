@@ -63,11 +63,7 @@ app.get("/todos", (req, res) => {
 
 app.post("/deletetodo/:id", (req, res) => {
     const todoId = req.params.id
-    TodoItem.findOne({ _id: todoId }).then(item => {
-        TodoItem.deleteOne({ _id: item._id })
-            .then(() => res.send())
-            .catch(e => console.log(e))
-    }).catch(e => console.log(e))
+    TodoItem.findOneAndDelete({ _id: todoId }).then(() => res.send())
 })
 
 app.post("/addtodo/:todo", (req, res) => {
@@ -89,6 +85,7 @@ app.post("/updatetodos/:id", (req, res) => {
         })
     })
 })
+
 
 app.listen(3001, () => {
     console.log("Todo list server is running on http://localhost:3001")
