@@ -76,7 +76,8 @@ app.post("/addtodo/:todo", (req, res) => {
         todo: todo,
         completed: false
     })
-    TodoItem.create(addItem).then(() => res.send()).catch(e => console.error(e))
+    addItem.save()
+    res.send()
 })
 
 app.post("/updatetodos/:id", (req, res) => {
