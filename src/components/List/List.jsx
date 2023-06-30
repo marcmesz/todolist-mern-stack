@@ -9,9 +9,9 @@ const List = (props) => {
 
     const handleChange = (e) => {
         const todoId = e.target.id
-        fetch(`${server}/updatetodo`,
+        fetch(`${server}/todo`,
             {
-                method: "POST",
+                method: "PUT",
                 body: JSON.stringify({ id: todoId }),
                 headers: { "Content-Type": "application/json" }
             })
@@ -20,9 +20,9 @@ const List = (props) => {
     }
 
     const handleDelete = (todoId) => {
-        fetch(`${server}/deletetodo`,
+        fetch(`${server}/todo`,
             {
-                method: "POST",
+                method: "DELETE",
                 body: JSON.stringify({ id: todoId }),
                 headers: { "Content-Type": "application/json" }
             })

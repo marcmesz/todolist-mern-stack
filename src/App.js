@@ -10,7 +10,7 @@ const App = () => {
     <div className="App">
       <Header />
       <List todos={todos} loading={loading} error={error} fetchData={fetchData} />
-      <AddTodo error={error} fetchData={fetchData} />
+      <AddTodo todos={todos} error={error} fetchData={fetchData} />
     </div>
   );
 }

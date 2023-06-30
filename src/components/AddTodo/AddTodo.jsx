@@ -14,17 +14,15 @@ const AddTodo = (props) => {
     const handleCreate = () => {
         const todo = inputRef.current.value.trim()
         if (todo.length > 0) {
-            const newTodo = {
-                todo: todo,
-                completed: false
-            }
-            fetch(`${server}/addtodo`,
+            fetch(`${server}/todo`,
                 {
                     method: "POST",
-                    body: JSON.stringify(newTodo),
+                    body: JSON.stringify({
+                        todo: todo,
+                        completed: false
+                    }),
                     headers: {
                         "Content-Type": "application/json",
-                        //'Content-Type': 'application/x-www-form-urlencoded',
                     },
                 })
                 .then(() => {
@@ -35,12 +33,25 @@ const AddTodo = (props) => {
         }
     }
 
+    const handleDeleteAll = () => {
+        fetch(`${server}/todo`, { method: "DELETE" }).then(() => props.fetchData())
+    }
+
     return (
         <>
             {!props.error &&
-                <div className="d-flex mt-3 gap-3">
-                    <Form.Control onKeyDown={(e) => handleKeyPress(e)} ref={inputRef} type="text" id="add-todo" placeholder="Add todo item to list" />
-                    <Button onClick={handleCreate} variant="primary" size="lg">Add</Button>
+                <div className="d-flex flex-column">
+                    <div className="d-flex mt-3 gap-3">
+                        <Form.Control onKeyDown={(e) => handleKeyPress(e)} ref={inputRef} type="text" id="add-todo" placeholder="Add todo item to list" />
+                        <Button onClick={handleCreate} variant="primary" size="lg">Add</Button>
+                    </div>
+                    {
+                        props.todos.length > 0 &&
+                        <div className="d-flex flex-column align-items-center mt-4">
+                            <p className="text-white">or you can</p>
+                            <Button onClick={handleDeleteAll} variant="danger" size="sm">Delete All Todos</Button>
+                        </div>
+                    }
                 </div>
             }
         </>

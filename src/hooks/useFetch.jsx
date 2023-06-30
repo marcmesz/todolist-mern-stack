@@ -7,7 +7,7 @@ const useFetch = () => {
     const server = process.env.REACT_APP_SERVER
 
     const fetchData = () => {
-        fetch(`${server}/todos`)
+        fetch(`${server}/todo`)
             .then(res => res.json())
             .then(data => {
                 setLoading(false)
